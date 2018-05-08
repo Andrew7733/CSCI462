@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>462 Team Ten</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the side navigation */
+.sidenav {
+    height: 100%;
+    width: 230px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #2d2d2d;
+    overflow-x: hidden;
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+
+/* Side navigation links */
+.sidenav a {
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color on hover */
+.sidenav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Style the content */
+.content {
+    margin-left: 230px;
+    padding-left: 20px;
+
+}
+
+/*begining of tablel CSS*/
+table.t1 {
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+  .t1 th, .t1 td {
+    padding: 4px 8px;
+    text-align: center;
+  }
+  .t1 thead th {
+    background: #4f81bd;
+    text-transform: lowercase;
+    text-align: left;
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
+  }
+  .t1 tr {
+    border-right: 1px solid #95b3d7;
+    text-align: center;
+  }
+  .t1 tbody tr {
+    border-bottom: 1px solid #95b3d7;
+    text-align: center;
+  }
+  .t1 tbody tr:nth-child(odd) {
+    background: #dbe5f0;
+    text-align: center;
+  }
+  .t1 tbody th, .t1 tbody tr:nth-child(even) td {
+    border-right: 1px solid #95b3d7;
+    text-align: center;
+  }
+  .t1 tfoot th {
+    background: #4f81bd;
+    text-align: left;
+    font-weight: normal;
+    font-size: 10px;
+    color: #fff;
+  }
+  .t1 tr *:nth-child(3), .t1 tr *:nth-child(4) {
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<div class="sidenav">
+   <h1 style="color: deepskyblue">NetBox+</h1>
+  <hr>
+  <form>
+    <p style="color: white">Device Name</p>
+      <input type="text" id="DeviceName"><br>
+    <p style="color: white">Manufacturer</p>
+      <input type="text" id="Manufacturer"><br>
+    <p style="color: white">Device Role</p>
+      <input type="text" id="DeviceRole"><br>
+    <p style="color: white">Site</p>
+      <input type="text" id="Site"><br>
+    <p style="color: white">Serial Number</p>
+      <input type="text" id="SerialNumber"><br>
+    <p style="color: white">Asset Tag</p>
+      <input type="text" id="asset_tag"><br>
+    <p style="color: white">Platform</p>
+      <input type="text" id="platform"><br>
+    <p style="color: white">Status</p>
+      <input type="text" id="status"><br>
+    <br>
+    <button type=button onclick="Search()">Search</button>
+    <button type=button onclick="Add()">Add</button>
+    <button type=button onclick="Home()">Home</button>
+
+      
+      <script type="text/javascript" language="javascript">
+          //Initialization of Javascript Variables
+          var NetBoxIP = "http://0.0.0.0:8000";
+
+          function Search() {
+            var DeviceName, DeviceType, DeviceRole, Site, SerialNumber, assetTag, platform, status;
+            
+
+            //Begin block of code to grab input
+              DeviceName = document.getElementById("DeviceName").value;
+              DeviceType = document.getElementById("Manufacturer").value;
+              DeviceRole = document.getElementById("DeviceRole").value;
+              Site = document.getElementById("Site").value;
+              SerialNumber = document.getElementById("SerialNumber").value;
+              assetTag = document.getElementById("asset_tag").value;
+              platform = document.getElementById("platform").value;
+              status = document.getElementById("status").value;
+              //alert(DeviceName + DeviceType + DeviceRole + Site + SerialNumber + assetTag + platform + status);
+
+
+            var xhttp = new XMLHttpRequest();
+
+
+            var obj, dbParam, myObj, x, txt = "";
+            obj = { "name":"x" };
+            dbParam = JSON.stringify(obj);
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                //console.log(this.responseText);
+                myObj = JSON.parse(this.responseText);
+                txt += "<table class='t1' border='1'>"
+                + "<tr><th>Device Name</th><th>Manufacturer</th><th>Device Role</th><th>Site</th><th>Serial Number</th><th>Asset Tag</th><th>Platform</th><th>Status</th></tr>"
+                var loopvar = 0;
+                for (x in myObj) {
+                    if (myObj.results[loopvar] != undefined){
+                        txt += "<tr><td>" +  myObj.results[loopvar].name + "</td><td>" 
+                            +  myObj.results[loopvar].device_type.manufacturer.name + "</td><td>"
+                            +  myObj.results[loopvar].device_role.name + "</td><td>"
+                            +  myObj.results[loopvar].site.name + "</td><td>"
+                            +  myObj.results[loopvar].serial + "</td><td>"
+                            +  myObj.results[loopvar].asset_tag + "</td><td>"
+                            +  myObj.results[loopvar].platform.name + "</td><td>"
+                            +  myObj.results[loopvar].status.label + "</td></tr>";
+                    }
+                    loopvar++;
+                }
+                txt += "</table>"        
+                document.getElementById("t1").innerHTML = txt;
+              }
+            };
+
+            //Check for any inputs that are empty and search by the rest if all are empty just do a search of all devices
+            var searchText = "?";
+            if(DeviceName != ""){
+              searchText += "name=" + DeviceName + "\&"
+            }
+            if(DeviceType != ""){
+              searchText += "manufacturer=" + DeviceType + "\&" //
+            }
+            if(DeviceRole != ""){
+              searchText += "role=" + DeviceRole + "\&" //
+            }
+            if(Site != ""){
+              searchText += "site=" + Site + "\&" //
+            }
+            if(SerialNumber != ""){
+              searchText += "serial=" + SerialNumber + "\&" 
+            }
+            if(assetTag != ""){
+              searchText += "asset_tag=" + assetTag + "\&" 
+            }
+            if(platform != ""){
+              searchText += "platform=" + platform + "\&" //
+            }
+            if(status != ""){
+              searchText += "status=" + status + "\&" //
+            }
+
+            //code to remove final trailing +
+            searchText = searchText.replace(/\&+$/, "");
+            //else  just search for all devices
+            if(searchText == "?"){searchText = "?name=" }
+            
+		    	  xhttp.open("GET", NetBoxIP + "/api/dcim/devices/" + searchText, true);
+            //xhttp.open("GET", NetBoxIP + "/search/?q=" + text, true); alternate search? not working
+            xhttp.send("x="+dbParam);
+            wait(200);
+          }
+          //Helper wait function for async calls
+          function wait(ms)
+          {
+              var d = new Date();
+              var d2 = null;
+              do { d2 = new Date(); }
+              while(d2-d < ms);
+          }
+          function Add() 
+          {
+            var page;
+            page = "<iframe src=\"http://0.0.0.0:8000/dcim/devices/add/\" style=\"width:90%; height:800px;\"></iframe>";
+            document.getElementById("t1").innerHTML = page;
+          }
+          function Home() 
+          {
+            var page;
+            page = "<iframe src=\"http://0.0.0.0:8000/\" style=\"width:90%; height:800px;\"></iframe>";
+            document.getElementById("t1").innerHTML = page;
+          }
+    </script>
+  </form>
+</div>
+
+<div class="content">
+  <body onload="Home();">
+  <p id="t1">
+      
+</p>
+</div>
+
+</body>
+</html>
