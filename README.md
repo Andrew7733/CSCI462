@@ -5,3 +5,9 @@ Netbox is mostly written in Python with some html, css, and javascript, but sinc
 One thing that we wish we could have gotten to that we didn't is creating a better report system. Ideally we would have also implemented a system to track when items move locations, so that we could generate reports that include a history of location changes. 
 
 One of our groups major contributions to the NetBox experience is the introduction of searching by mulitple fields. This allows users to effectively narrow search results with fewer queries with a more intuitive interface.
+
+Project Dependencies:
+
+Functioning NetBox installation
+
+Modern Browser
