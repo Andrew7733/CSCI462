@@ -6,7 +6,8 @@ One thing that we wish we could have gotten to that we didn't is creating a bett
 
 One of our groups major contributions to the NetBox experience is the introduction of searching by mulitple fields. This allows users to effectively narrow search results with fewer queries with a more intuitive interface.
 
-Project Dependencies:
+
+# Project Dependencies:
 
 Functioning NetBox installation
 
