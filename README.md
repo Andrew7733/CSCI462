@@ -1,4 +1,4 @@
-### Project Background
+### Project Background:
 
 We worked with the College IT department to develop software that will extend the functionality of Netbox an open source inventory management solution. Netbox is used to rack and manage hardware in a network. Our group was tasked with creating a version which added a multiple field search and could better handle items not connected to the network. To do this we made a wrapper that presents itself as a sidebar over the existing Netbox UI. This sidebar contains all the search fields as well as buttons to reach the homepage and add page.
 
